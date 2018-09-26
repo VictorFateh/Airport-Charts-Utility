@@ -8,50 +8,39 @@ from bs4 import BeautifulSoup
 
 def start_download(input_list):
     for airport in input_list:
-        chart_download(airport)
+        for i in scrape_page(airport):
+            download_file(airport, i[0], i[1])
 
 
-def chart_downloader(url, airport, section, name):
-    r = requests.get(url)
-    cur = os.path.dirname(os.path.realpath(__file__))
-    directory = "\Charts\%s\%s\%s.pdf" % (airport, section, name)
-    print(cur + directory)
-    urllib.request.urlretrieve(url, directory)
+def download_file(airport, name, url):
+    if not os.path.exists("Charts/{}".format(airport)):
+        os.makedirs("Charts/{}".format(airport))
+    location = "Charts/{}/{}.pdf".format(airport, name.replace('/', ''))
+    urllib.request.urlretrieve(url, location)
 
 
-# Given an airpot ICAO code, download all charts
-# https://www.airnav.com/airport/{airport}
-def chart_download(airport):
+# Given an airport ICAO, returns list
+# [("APPROACH NAME", "PDF URL"), ("...", "..."), ...]
+def scrape_page(airport):
     try:
-        raw_html = requests.get("https://www.airnav.com/airport/{}".format(airport)).text
+        data = requests.get("https://www.airnav.com/airport/{}".format(airport))
 
-        if not os.path.exists("Charts/{}".format(airport)):
-            os.makedirs("Charts/{}".format(airport))
+        soup = BeautifulSoup(data.text, 'html.parser')
 
-        soup = BeautifulSoup(raw_html, features="html.parser")
+        pdf_list = []
 
-        insert = soup.find(text="Instrument Procedures")
+        pdf_table = soup.find(text="Instrument Procedures").parent.findNext('table')
 
-        STARS_HEADER = insert.parent.findNext('th')
-        APPROACH_HEADER = STARS_HEADER.findNext('th')
-        DEPARTURE_HEADER = APPROACH_HEADER.findNext('th')
+        for link in pdf_table.find_all('a'):
+            title_pdf_tuple = (link.findPrevious('td').findPrevious('td').findPrevious('td').text, link['href'][8:])
+            pdf_list.append(title_pdf_tuple)
 
-        star_str = STARS_HEADER.text.lstrip()
-        app_str = APPROACH_HEADER.text.lstrip()
-        dep_str = DEPARTURE_HEADER.text.lstrip()
+        return pdf_list
 
-        if "STARs" in star_str:
-            if not os.path.exists("Charts/{}/{}".format(airport, star_str)):
-                os.makedirs("Charts/{}/{}".format(airport, star_str))
-            if "IAPs" in app_str:
-                if not os.path.exists("Charts/{}/{}".format(airport, app_str)):
-                    os.makedirs("Charts/{}/{}".format(airport, app_str))
-                if "Departure" in dep_str:
-                    if not os.path.exists("Charts/{}/{}".format(airport, dep_str)):
-                        os.makedirs("Charts/{}/{}".format(airport, dep_str))
+    except Exception as e:
+        return "Error: ", e
 
-        print(star_str + "\n" + app_str + "\n" + dep_str)
 
-    except:
-        print("Error", sys.exc_info())
-        pass
+if __name__ == "__main__":
+    test_list = ['KSJC', 'KSFO', 'KPAO']
+    start_download(test_list)

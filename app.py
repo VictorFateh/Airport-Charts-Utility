@@ -10,8 +10,8 @@ class ChartsApp(Tk):
     def __init__(self):
         super().__init__()
 
-        self.title("Chart Buddy")
-        self.geometry('400x200')
+        self.title("Chart Downloader")
+        self.geometry('600x200+500+300')
         self.btn = Button(self, text='Download', command=self.download)
         self.btn.grid(row=0, column=2)
         self.progress = Progressbar(self, orient=HORIZONTAL, length=185, mode='indeterminate')

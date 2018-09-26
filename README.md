@@ -9,16 +9,18 @@ In a python 3 virtualenv
 2. ``python app.py``
 
 ## Usage
-1. Type a list of US ICAO airport codes
-2. Separate each airport with a space
-3. Click download and wait for "Done" message
+1. Type a list of US ICAO airport codes (separate each airport with a space)
+2. Click download and wait for "Done" message
 
-## Future goals
-* Better input checking/correcting
+## Plans
+* Better input checking/correcting (live ICAO crosscheck?)
 * Pre-populated airport lists (state/region selected)
-* Download from text file list
-* Accurate definite progress bar (with file logs)
-* Auto update?
+* Accurate progress bar
+* Auto update
     * Run as a chart updater to user dir and check against latest charts for differences
     * Or just force overwrite
 * Release as utility on [XP forum](https://forums.x-plane.org/index.php?/files/)
+
+## Dev Notes
+* Look into GUI switch (PyQt5, Ortho4xp)
+
