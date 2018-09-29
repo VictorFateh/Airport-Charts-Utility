@@ -23,4 +23,4 @@ In a python 3 virtualenv
 
 ## Dev Notes
 * Look into GUI switch (PyQt5, Ortho4xp)
-
+* Switch from airnav to "https://flightaware.com/resources/airport/KPAO/APD/AIRPORT+DIAGRAM"
