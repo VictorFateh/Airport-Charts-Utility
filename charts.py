@@ -13,10 +13,10 @@ def start_download(input_list):
 
 
 def download_file(airport, diagram_type, name, url):
-    location = "Charts/{}/{}/{}.pdf".format(airport, diagram_type, name.replace('/', ''))
+    location = "Charts/{}/{}/{}.pdf".format(airport, diagram_type.strip(), name.replace('/', ''))
     try:
         if not os.path.exists("Charts/{}/{}".format(airport, diagram_type)):
-            os.makedirs("Charts/{}/{}".format(airport, diagram_type))
+            os.makedirs("Charts/{}/{}".format(airport, diagram_type.strip().replace(" ", "+")))
         urllib.request.urlretrieve(url, location)
         return True
     except Exception as e:
