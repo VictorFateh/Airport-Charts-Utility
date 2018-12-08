@@ -5,23 +5,23 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def start_download(input_list):
+def start_download(input_list, directory):
     for airport in input_list:
         for i in scrape_flightaware(airport):
-            if download_file(airport, i[0], i[1], i[2]):
+            if download_file(directory, airport, i[0], i[1], i[2]):
                 print("{} - {} downloaded".format(airport, i[1]))
 
 
-def download_file(airport, diagram_type, name, url):
-    location = "Charts/{}/{}/{}.pdf".format(airport, diagram_type.strip(), name.replace('/', ''))
+def download_file(directory, airport, diagram_type, name, url):
+    location = "{}/{}/{}/{}.pdf".format(directory, airport, diagram_type.strip(), name.replace('/', ''))
     try:
-        if not os.path.exists("Charts/{}/{}".format(airport, diagram_type)):
-            os.makedirs("Charts/{}/{}".format(airport, diagram_type.strip().replace(" ", "+")))
+        if not os.path.exists("{}/{}/{}".format(directory, airport, diagram_type)):
+            os.makedirs("{}/{}/{}".format(directory, airport, diagram_type.strip().replace(" ", "+")))
         urllib.request.urlretrieve(url, location)
         return True
     except Exception as e:
         print("Unable to download {}".format(airport), e)
-        os.rmdir("Charts/{}".format(airport))
+        os.rmdir("{}/{}".format(directory, airport))
         return False
 
 
