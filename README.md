@@ -13,12 +13,10 @@ In a python 3 virtualenv
 2. Type a list of US ICAO airport codes (separate each airport with a space)
 3. Click download and wait for "Done" message
 
-## Plans
-* Better error handling (not just saying 'oops couldn't download from XXXX')
+## Future Plans
+* Better error handling
 * Pre-populated airport lists (state/region selected)
-* Accurate progress bar
-* Release as utility on [XP forum](https://forums.x-plane.org/index.php?/files/)
-
-## Dev Notes
-* Look into GUI switch (PyQt5, Ortho4xp)
+* Update button to let use update all charts in specific directory
+* ~~Accurate progress bar~~
 * ~~Switch from airnav to flightaware for data~~
+* Release as utility on [XP forum](https://forums.x-plane.org/index.php?/files/)
