@@ -1,8 +1,10 @@
 import threading
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 from tkinter.ttk import *
+import easygui
 
+import os
 import charts
 
 
@@ -12,6 +14,7 @@ class ChartsApp(Tk):
 
         self.title("Chart Downloader")
         self.geometry('600x200+500+300')
+        self.data_file_path = easygui.diropenbox()
         self.btn = Button(self, text='Download', command=self.download)
         self.btn.grid(row=0, column=2)
         self.progress = Progressbar(self, orient=HORIZONTAL, length=185, mode='determinate')
@@ -26,10 +29,11 @@ class ChartsApp(Tk):
 
     def download(self):
         def start_download():
+            print(self.data_file_path)
             self.btn['state'] = 'disabled'
             self.txt.grid_remove()
             self.progress.grid(row=0, column=1)
-            charts.start_download(self,user_list)
+            charts.start_download(self, user_list, self.data_file_path)
             self.btn.grid_remove()
             self.lbl['text'] = 'Done'
             self.progress.grid_forget()

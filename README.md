@@ -1,6 +1,6 @@
 # Airport-Charts-Utility
 
-A tool to help batch-download airport instrument procedure charts from airnav.com
+A tool to help batch-download airport instrument procedure charts from flightaware.com
 
 
 ## Installation
@@ -9,16 +9,14 @@ In a python 3 virtualenv
 2. ``python app.py``
 
 ## Usage
-1. Type a list of US ICAO airport codes (separate each airport with a space)
-2. Click download and wait for "Done" message
+1. Select or create destination folder (Airports will each be individual directories)
+2. Type a list of US ICAO airport codes (separate each airport with a space)
+3. Click download and wait for "Done" message
 
 ## Plans
-* Better input checking/correcting (live ICAO crosscheck?)
+* Better error handling (not just saying 'oops couldn't download from XXXX')
 * Pre-populated airport lists (state/region selected)
 * Accurate progress bar
-* Auto update
-    * Run as a chart updater to user dir and check against latest charts for differences
-    * Or just force overwrite
 * Release as utility on [XP forum](https://forums.x-plane.org/index.php?/files/)
 
 ## Dev Notes

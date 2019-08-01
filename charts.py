@@ -5,27 +5,30 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def start_download(self, input_list):
+def start_download(self, input_list, directory):
     for airport in input_list:
-        for i in compile_diagram_list(airport):
-            self.progress['maximum'] = len(compile_diagram_list(airport))
-            if download_file(airport, i[0], i[1], i[2]):
-                self.progress.step()
-                self.airport_text['text'] = "Downloading: {}".format(airport.upper())
+        iter_list = compile_diagram_list(airport)
+        for i in iter_list:
+            self.progress['maximum'] = len(iter_list)
+            if download_file(directory, airport, i[0], i[1], i[2]):
                 self.chart_text['text'] = i[1]
+                self.airport_text['text'] = "Downloading: {}".format(airport.upper())
+                self.progress.step()
+    self.airport_text.destroy()
+    self.chart_text.destroy()
 
 
-
-def download_file(airport, diagram_type, name, url):
-    location = "Charts/{}/{}/{}.pdf".format(airport, diagram_type, name.replace('/', ''))
+def download_file(directory, airport, diagram_type, name, url):
+    location = "{}/{}/{}/{}.pdf".format(directory, airport, diagram_type.strip(), name.replace('/', ''))
     try:
-        if not os.path.exists("Charts/{}/{}".format(airport, diagram_type)):
-            os.makedirs("Charts/{}/{}".format(airport, diagram_type))
+        path_to = "{}/{}/{}".format(directory, airport.upper(), diagram_type.strip().replace(" ", "+"))
+        if not os.path.exists(path_to):
+            os.makedirs(path_to)
         urllib.request.urlretrieve(url, location)
         return True
     except Exception as e:
         print("Unable to download {}".format(airport), e)
-        os.rmdir("Charts/{}".format(airport))
+        os.rmdir("{}/{}".format(directory, airport))
         return False
 
 
