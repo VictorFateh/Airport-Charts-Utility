@@ -5,11 +5,15 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def start_download(input_list):
+def start_download(self, input_list):
     for airport in input_list:
-        for i in scrape_flightaware(airport):
+        for i in compile_diagram_list(airport):
+            self.progress['maximum'] = len(compile_diagram_list(airport))
             if download_file(airport, i[0], i[1], i[2]):
-                print("{} - {} downloaded".format(airport, i[1]))
+                self.progress.step()
+                self.airport_text['text'] = "Downloading: {}".format(airport.upper())
+                self.chart_text['text'] = i[1]
+
 
 
 def download_file(airport, diagram_type, name, url):
@@ -25,10 +29,9 @@ def download_file(airport, diagram_type, name, url):
         return False
 
 
-# Diagram: https://flightaware.com/resources/airport/SFO/APD/AIRPORT+DIAGRAM/pdf
-# Procedures: https://flightaware.com/resources/airport/KSFO/procedures
+# URL Example: https://flightaware.com/resources/airport/SFO/APD/AIRPORT+DIAGRAM/pdf
 # Returns list ready to download [TYPE, NAME, PDF_URL]
-def scrape_flightaware(airport):
+def compile_diagram_list(airport):
     try:
         data = requests.get("https://flightaware.com/resources/airport/{}/procedures".format(airport))
 

@@ -14,20 +14,22 @@ class ChartsApp(Tk):
         self.geometry('600x200+500+300')
         self.btn = Button(self, text='Download', command=self.download)
         self.btn.grid(row=0, column=2)
-        self.progress = Progressbar(self, orient=HORIZONTAL, length=185, mode='indeterminate')
+        self.progress = Progressbar(self, orient=HORIZONTAL, length=185, mode='determinate')
         self.lbl = Label(self, text="Separate ICAOs by spaces")
         self.lbl.grid(column=0, row=0)
         self.txt = Entry(self, width=30)
         self.txt.grid(column=1, row=0)
+        self.airport_text = Label(self, text="")
+        self.airport_text.grid(row=2, column=0)
+        self.chart_text = Label(self, text="")
+        self.chart_text.grid(row=2, column=1)
 
     def download(self):
         def start_download():
             self.btn['state'] = 'disabled'
             self.txt.grid_remove()
             self.progress.grid(row=0, column=1)
-            self.progress.start()
-            charts.start_download(user_list)
-            self.progress.stop()
+            charts.start_download(self,user_list)
             self.btn.grid_remove()
             self.lbl['text'] = 'Done'
             self.progress.grid_forget()
